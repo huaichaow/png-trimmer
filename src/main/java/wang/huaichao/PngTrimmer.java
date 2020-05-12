@@ -50,9 +50,7 @@ public class PngTrimmer {
     }
 
     private void checkInput(File input, File output, int alphaThreshold) {
-        if (alphaThreshold >= 0xFF) {
-            throw new IllegalArgumentException("alphaThreshold should be less than 255");
-        }
+        checkAlphaThreshold(alphaThreshold);
 
         String suffix = "." + SUFFIX;
 
@@ -62,6 +60,21 @@ public class PngTrimmer {
             !output.getName().endsWith(suffix)) {
             throw new IllegalArgumentException("accept only .png files");
         }
+    }
+
+    private void checkAlphaThreshold(int alphaThreshold) {
+        if (alphaThreshold >= 0xFF) {
+            throw new IllegalArgumentException("alphaThreshold should be less than 255");
+        }
+    }
+
+    public Boundary getPngBoundary(File input, int alphaThreshold) throws IOException {
+        checkAlphaThreshold(alphaThreshold);
+
+        return findBoundary(
+            ImageIO.read(input),
+            alphaThreshold
+        );
     }
 
     private Boundary findBoundary(BufferedImage img, int alphaThreshold) {
@@ -86,7 +99,7 @@ public class PngTrimmer {
             }
         }
 
-        return new Boundary(minX, minY, maxX, maxY);
+        return new Boundary(minX, minY, maxX, maxY, img.getWidth(), img.getHeight());
     }
 
     private BufferedImage trimAll(BufferedImage img, Boundary boundary) {

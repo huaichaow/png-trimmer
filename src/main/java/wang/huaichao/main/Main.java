@@ -1,19 +1,16 @@
-package wang.huaichao;
+package wang.huaichao.main;
+
+import wang.huaichao.DirWalker;
+import wang.huaichao.PngTrimmer;
+import wang.huaichao.Worker;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Main {
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
+import static wang.huaichao.ANSI_COLOR.CYAN;
+import static wang.huaichao.ANSI_COLOR.RESET;
 
+public class Main {
     public static final int TrimDirX = 0x01;
     public static final int TrimDirY = 0x02;
     public static final int TrimDirAll = TrimDirX | TrimDirY;
@@ -53,7 +50,7 @@ public class Main {
                                 trimmer.trimAll(file, new File(outputDir, file.getName()), alphaThreshold);
                                 break;
                         }
-                        System.out.println(ANSI_CYAN + "trimmed " + file + ANSI_RESET);
+                        System.out.println(CYAN + "trimmed " + file + RESET);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -65,14 +62,14 @@ public class Main {
     private static void printUsage() {
         System.out.println(
             "Usage: \n" +
-                "  java wang.huaichao.Main <trim direction> <input dir> <output dir> <alpha threshold>\n" +
+                "  java wang.huaichao.main.Main <trim direction> <input dir> <output dir> <alpha threshold>\n" +
                 "Arguments:\n" +
                 "  <trim direction>:\n" +
                 "    1: left and right;\n" +
                 "    2: top and bottom;\n" +
                 "    3: all directions.\n" +
                 "example:\n" +
-                "  java wang.huaichao.Main 1 d:\\pngs\\ d:\\trimmed-pngs\\ 0\n"
+                "  java wang.huaichao.main.Main 1 d:\\pngs\\ d:\\trimmed-pngs\\ 0\n"
         );
     }
 }
